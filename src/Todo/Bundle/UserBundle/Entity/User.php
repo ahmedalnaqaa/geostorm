@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nourannayel
- * Date: 5/28/18
- * Time: 1:00 AM
- */
 
 namespace Todo\Bundle\UserBundle\Entity;
 
@@ -28,6 +22,5 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-        // your own logic
     }
 }
