@@ -16,11 +16,20 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new Todo\Bundle\UserBundle\UserBundle(),
+            new Todo\Bundle\UserBundle\TodoUserBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
+            new JMS\DiExtraBundle\JMSDiExtraBundle(),
+            new JMS\AopBundle\JMSAopBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+
+            // Sonata admin bundles
+            new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
+            new Sonata\CoreBundle\SonataCoreBundle(),
+            new Sonata\BlockBundle\SonataBlockBundle(),
+            new Sonata\AdminBundle\SonataAdminBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
