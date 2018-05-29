@@ -1,5 +1,5 @@
-user:
-    resource: "@UserBundle/Controller/"
+todo_bundle_user:
+    resource: "@TodoUserBundle/Controller/"
     type:     annotation
     prefix:   /
 
