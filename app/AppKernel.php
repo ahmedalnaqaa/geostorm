@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Todo\Bundle\UserBundle\UserBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
 
         ];
 
