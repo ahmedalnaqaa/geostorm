@@ -90,3 +90,12 @@ jms_di_extra:
         - Sonata\BlockBundle\Annotation
         
 nelmio_api_doc: ~
+
+fos_oauth_server:
+    db_driver: orm       # Drivers available: orm, mongodb, or propel
+    client_class:        Todo\Bundle\UserBundle\Entity\Client
+    access_token_class:  Todo\Bundle\UserBundle\Entity\AccessToken
+    refresh_token_class: Todo\Bundle\UserBundle\Entity\RefreshToken
+    auth_code_class:     Todo\Bundle\UserBundle\Entity\AuthCode
+    service:
+        user_provider: fos_user.user_provider.username
