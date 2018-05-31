@@ -10,7 +10,7 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
  * AuthCode
  *
  * @ORM\Entity
- * @ORM\Table(name="auth_code")
+ * @ORM\Table(name="auth_codes")
  */
 class AuthCode extends BaseAuthCode
 {

@@ -10,7 +10,7 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
  * RefreshToken
  *
  * @ORM\Entity
- * @ORM\Table(name="refresh_token")
+ * @ORM\Table(name="refresh_tokens")
  */
 class RefreshToken extends BaseRefreshToken
 {

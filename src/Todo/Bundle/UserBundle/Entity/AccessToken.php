@@ -10,7 +10,7 @@ use FOS\OAuthServerBundle\Model\ClientInterface;
  * AccessToken
  *
  * @ORM\Entity
- * @ORM\Table(name="access_token")
+ * @ORM\Table(name="access_tokens")
  */
 class AccessToken extends BaseAccessToken
 {
