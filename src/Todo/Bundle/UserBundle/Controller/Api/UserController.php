@@ -4,6 +4,7 @@ namespace Todo\Bundle\UserBundle\Controller\Api;
 
 
 use FOS\RestBundle\Controller\Annotations\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Todo\Bundle\UserBundle\Entity\User;
@@ -41,6 +42,36 @@ class UserController extends Controller
         return new JsonResponse("Login Successfully",Response::HTTP_OK);
 
 
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @Route("/api/register")
+     * @Method("POST")
+     */
+
+    public function registerAction(Request $request,UserPasswordEncoderInterface $encoder)
+    {
+        $user = new User();
+
+        $username = $request->get('username');
+
+        $password = $request->get('password');
+
+        $encoded = $encoder->encodePassword($user, $password);
+
+        $user->setUsername($username);
+
+        $user->setPassword($encoded);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $entityManager->persist($user);
+
+        $entityManager->flush();
+
+        return new JsonResponse("User Created Successfully",Response::HTTP_OK);
     }
 
 }
