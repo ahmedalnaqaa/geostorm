@@ -1,4 +1,0 @@
-services:
-#    todo_bundle_list.example:
-#        class: Todo\Bundle\ListBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
