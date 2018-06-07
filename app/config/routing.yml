@@ -3,8 +3,14 @@ todo_bundle_user:
     type:     annotation
     prefix:   /
 
-fos_user:
-    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+#fos_user:
+#    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+api_login_check:
+    path: /login_check
+
+routing_rest:
+    resource: routing_rest.yml
 
 #sonata admin
 admin:
