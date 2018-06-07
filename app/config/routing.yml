@@ -1,8 +1,3 @@
-todo_bundle_list:
-    resource: "@TodoBundleListBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 todo_bundle_user:
     resource: "@TodoUserBundle/Controller/"
     type:     annotation
