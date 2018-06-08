@@ -55,7 +55,6 @@ class RegisterController extends FOSRestController implements ClassResourceInter
         $form->setData($user);
         $form->submit($request->request->all());
 
-
         if (! $form->isValid()) {
 
             $event = new FormEvent($form, $request);
