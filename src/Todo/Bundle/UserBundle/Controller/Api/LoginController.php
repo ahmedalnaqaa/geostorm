@@ -59,7 +59,6 @@ class LoginController extends TokenController
      *
      * @return Response
      */
-
     public function loginAction(Request $request)
     {
         $username = $request->get('username');
