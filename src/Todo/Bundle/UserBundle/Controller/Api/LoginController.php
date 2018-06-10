@@ -29,13 +29,6 @@ class LoginController extends TokenController
         $this->userManager = $userManager;
     }
 
-    public function tokenAction(Request $request)
-    {
-        $result = parent::tokenAction($request);
-
-        return $result;
-    }
-
     /**
      * @ApiDoc(
      *   resource = true,
