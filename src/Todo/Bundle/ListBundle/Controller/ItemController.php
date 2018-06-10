@@ -12,7 +12,6 @@ use Todo\Bundle\ListBundle\Entity\ListItem;
 
 class ItemController extends Controller
 {
-
     /**
      * @param Request $request
      * @param ListItem $listItem
@@ -46,7 +45,6 @@ class ItemController extends Controller
 
     }
 
-
     /**
      * @param Request $request
      * @param $list_id
@@ -54,7 +52,7 @@ class ItemController extends Controller
      * @return JsonResponse
      * @Rest\Post("/api/list/{list_id}/item/{id}/edit")
      */
-    public function updateItem(Request $request, $list_id, $id)
+    public function updateItemAction(Request $request, $list_id, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -78,12 +76,11 @@ class ItemController extends Controller
 
     }
 
-
     /**
      * @Rest\Delete("/api/list/{list_id}/item/{id}/delete")
      */
 
-    public function deleteItemInList(ListItem $listItem,$id)
+    public function deleteItemAction(ListItem $listItem,$id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -108,6 +105,5 @@ class ItemController extends Controller
 
         return new JsonResponse("Item ID is Deleted",Response::HTTP_OK);
     }
-
 
 }
