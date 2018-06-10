@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  * List
  *
  * @ORM\Table(name="lists")
- * @ORM\Entity(repositoryClass="Todo\Bundle\ListBundle\Repository\ListRepository")
  */
 class ListItem
 {

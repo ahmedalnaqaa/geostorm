@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
  * Item
  *
  * @ORM\Table(name="items")
- * @ORM\Entity(repositoryClass="Todo\Bundle\ListBundle\Repository\ItemRepository")
  */
 class Item
 {
@@ -100,7 +99,4 @@ class Item
     {
         $this->created_at = $created_at;
     }
-
-
-
 }
