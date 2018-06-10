@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="users")
+ * @ORM\Entity(repositoryClass="Todo\Bundle\UserBundle\Repository\UserRepository")
+ *
  */
 class User extends BaseUser
 {
@@ -28,8 +30,45 @@ class User extends BaseUser
      */
     protected $groups;
 
+
+    /**
+     * @return mixed
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param mixed $username
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+
+
     public function __construct()
     {
         parent::__construct();
     }
+
+
 }
