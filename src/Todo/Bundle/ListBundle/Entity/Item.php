@@ -53,4 +53,54 @@ class Item
         return $this->id;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param mixed $content
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param mixed $order
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * @param mixed $created_at
+     */
+    public function setCreatedAt($created_at)
+    {
+        $this->created_at = $created_at;
+    }
+
+
+
 }
