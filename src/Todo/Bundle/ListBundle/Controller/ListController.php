@@ -77,22 +77,18 @@ class ListController extends Controller
      */
     public function createListAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+//        $em = $this->getDoctrine()->getManager();
+//
+//        $list = new ListItem();
+//
+//        $em->persist($list);
+//        $em->flush();
+//
+//        return new JsonResponse('List is Created',Response::HTTP_OK);
 
-        $list = new ListItem();
+        $body = $request->getContent();
 
-        $title = $request->get('title');
-        $description = $request->get('description');
-        $created_at = $request->get('created_at');
-
-        $list->setTitle($title);
-        $list->setDescription($description);
-        $list->setCreatedAt($created_at);
-
-        $em->persist($list);
-        $em->flush();
-
-        return new JsonResponse('List is Created',Response::HTTP_OK);
+        return new Response($body);
     }
 
     /**
