@@ -20,7 +20,6 @@ class ListController extends Controller
      *  description="Returns all Lists"
      * )
      */
-
     public function getListsAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -43,7 +42,6 @@ class ListController extends Controller
      *   section="List"
      * )
      */
-
     public function getListItems(ListItem $listItem)
     {
         $items = [];
@@ -118,9 +116,7 @@ class ListController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $list = $em->getRepository('TodoBundleListBundle:ListItem')->findBy(['listItem' => $listItem]);
-
-        if (!$list){
+        if (!$listItem){
             return $this->createNotFoundException("List is not found in the Database");
         }
 
@@ -128,15 +124,14 @@ class ListController extends Controller
         $description = $request->get('description');
         $created_at = $request->get('created_at');
 
-        $list->setTitle($title);
-        $list->setDescription($description);
-        $list->setCreatedAt($created_at);
+        $listItem->setTitle($title);
+        $listItem->setDescription($description);
+        $listItem->setCreatedAt($created_at);
 
-        $em->persist($list);
+        $em->persist($listItem);
         $em->flush();
 
         return new JsonResponse("List Updated Successfully", Response::HTTP_OK);
-
     }
 
     /**
@@ -152,15 +147,12 @@ class ListController extends Controller
     public function deleteListAction(ListItem $listItem)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $list = $em->getRepository('TodoBundleListBundle:ListItem')->findBy(array('listItem' => $listItem));
-
-        if (!$list){
+        if (!$listItem){
             return $this->createNotFoundException("List is not Found");
         }
-        $em->persist($list);
+        $em->remove($listItem);
         $em->flush();
 
-        return new JsonResponse("List is Deleted",Response::HTTP_OK);
+        return new JsonResponse("List is Deleted",Response::HTTP_NO_CONTENT);
     }
 }

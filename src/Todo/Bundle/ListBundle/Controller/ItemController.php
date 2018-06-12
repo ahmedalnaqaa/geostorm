@@ -31,9 +31,6 @@ class ItemController extends Controller
     public function addItemAction(Request $request,ListItem $listItem)
     {
         $em = $this->getDoctrine()->getManager();
-        $list = $em->getRepository('TodoBundleListBundle:ListItem')->findBy(
-            array('listItem' => $listItem)
-        );
 
         if (!$list){
             return new JsonResponse(['message' => 'List is not Found in the Database'], Response::HTTP_NOT_FOUND);
@@ -71,7 +68,7 @@ class ItemController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function updateItemAction(Request $request, $list_id, $id)
+    public function updateItemAction(Request $request, $list_id, Item $item)
     {
         $em = $this->getDoctrine()->getManager();
         $list = $em->getRepository('TodoBundleListBundle:ListItem')->find($list_id);
