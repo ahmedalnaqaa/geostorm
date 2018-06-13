@@ -2,6 +2,7 @@
 
 namespace Todo\Bundle\ListBundle\Controller\Api;
 
+use Doctrine\ORM\Mapping as ORM;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,6 +12,10 @@ use Todo\Bundle\ListBundle\Entity\ListItem;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Todo\Bundle\ListBundle\Form\ListType;
 
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="list_controller")
+ */
 class ListController extends FOSRestController
 {
     /**
@@ -43,24 +48,13 @@ class ListController extends FOSRestController
      *   section="List"
      * )
      */
-    public function getListItems(ListItem $listItem)
+    public function getListItems(ListItem $list)
     {
-        $items = [];
+       $items = $list->getItems();
 
-       foreach ($listItem->getItems() as $item){
-           $items[] = [
-             'id' => $item->getId(),
-             'content' => $item->getContent(),
-             'order' => $item->getOrder(),
-             'created_at' => $item->getCreatedAt()->format('M d, Y')
-           ];
-       }
+       $data = $this->get('jms_serializer')->serialize($items,'json');
 
-       $data = [
-          'items' => $items
-       ];
-
-        return new JsonResponse($data ,Response::HTTP_OK);
+       return new JsonResponse($data, Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -98,42 +92,40 @@ class ListController extends FOSRestController
     }
 
     /**
-     * Update List.
+     * Edit List.
      *
      * @Rest\Post("/api/list/{id}/edit")
-     * @Rest\QueryParam(name="title", description="List Title")
-     * @Rest\QueryParam(name="description", description="List Description")
-     * @Rest\QueryParam(name="created_at", description="List CreatedAt")
      *
      * @ApiDoc(
      *   resource=true,
-     *   section="List"
+     *   section="List",
+     *   input="\Todo\Bundle\ListBundle\Form\ListType"
      * )
      *
      * @param Request $request
-     * @param ListItem $listItem
+     * @param ListItem $list
+     * @return mixed
      */
-    public function editListAction(Request $request,ListItem $listItem)
+    public function editListAction(Request $request,ListItem $list)
     {
-
         $em = $this->getDoctrine()->getManager();
 
-        if (!$listItem){
+        if (!$list){
             return $this->createNotFoundException("List is not found in the Database");
         }
+        $form = $this->createForm(ListType::class, $list, array(
+            'method' => 'POST',
+            'csrf_protection' => false,
+        ));
 
-        $title = $request->get('title');
-        $description = $request->get('description');
-        $created_at = $request->get('created_at');
+        $form->handleRequest($request);
 
-        $listItem->setTitle($title);
-        $listItem->setDescription($description);
-        $listItem->setCreatedAt($created_at);
-
-        $em->persist($listItem);
-        $em->flush();
-
-        return new JsonResponse("List Updated Successfully", Response::HTTP_OK);
+        if ($form->isValid()){
+            $em->persist($list);
+            $em->flush();
+            return $list;
+        }
+        return $form;
     }
 
     /**
@@ -146,15 +138,15 @@ class ListController extends FOSRestController
      *   section = "List"
      * )
      */
-    public function deleteListAction(ListItem $listItem)
+    public function deleteListAction(ListItem $list)
     {
         $em = $this->getDoctrine()->getManager();
-        if (!$listItem){
+        if (!$list){
             return $this->createNotFoundException("List is not Found");
         }
-        $em->remove($listItem);
+        $em->remove($list);
         $em->flush();
 
-        return new JsonResponse("List is Deleted",Response::HTTP_NO_CONTENT);
+        return new JsonResponse(null,Response::HTTP_NO_CONTENT);
     }
 }
