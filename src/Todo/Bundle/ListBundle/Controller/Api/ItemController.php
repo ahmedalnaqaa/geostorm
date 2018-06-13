@@ -4,6 +4,7 @@ namespace Todo\Bundle\ListBundle\Controller\Api;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Todo\Bundle\ListBundle\Entity\Item;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +31,9 @@ class ItemController extends FOSRestController
      */
     public function addItemAction(Request $request,ListItem $list)
     {
+        if (!$this->getUser() || $list->getUser() != $this->getUser()) {
+            throw new AccessDeniedException("Access Denied");
+        }
         $em = $this->getDoctrine()->getManager();
 
         if (!$list){
@@ -60,7 +64,7 @@ class ItemController extends FOSRestController
      *
      * @ApiDoc(
      *     section="Item",
-     *     input="Todo\Bundle\ListBundle\Entity\Item"
+     *     input="Todo\Bundle\ListBundle\Form\ItemType"
      * )
      * @param Request $request
      * @param Item $item
@@ -68,6 +72,9 @@ class ItemController extends FOSRestController
      */
     public function editItemAction(Request $request,Item $item)
     {
+        if (!$this->getUser()){
+            throw new AccessDeniedException("Access Denied");
+        }
         $em = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(ItemType::class, $item, array(
@@ -89,13 +96,15 @@ class ItemController extends FOSRestController
      * Delete Item
      *
      * @Rest\Delete("/api/item/{id}/delete")
-     *
      * @ApiDoc(
      *     section="Item"
      * )
      */
     public function deleteItemAction(Item $item)
     {
+        if (!$this->getUser()){
+            throw new AccessDeniedException("Access Denied");
+        }
         $em = $this->getDoctrine()->getManager();
 
         if (!$item){

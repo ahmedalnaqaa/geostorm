@@ -115,8 +115,3 @@ fos_rest:
         include_format: false
     exception:
         enabled: true
-
-sensio_framework_extra:
-    request:
-        converters: true
-        auto_convert: false

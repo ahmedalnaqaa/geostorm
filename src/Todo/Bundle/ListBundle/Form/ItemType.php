@@ -13,8 +13,8 @@ class ItemType extends AbstractType
     {
         $builder->add('content')
                 ->add('order')
-                ->add('list',EntityType::class,[
-                    'class' => 'Todo\Bundle\ListBundle\Entity\ListItem'
+                ->add('list',ListType::class,[
+                    'data_class' => null
                 ]);
     }
 

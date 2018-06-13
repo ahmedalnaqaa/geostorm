@@ -11,8 +11,7 @@ class ListRepository extends EntityRepository
 {
     /**
      * Return User Lists
-     * @ParamConverter(name="user", Class="TodoUserBundle:User")
-     * @param User $user
+     * @param $user
      *
      * @return QueryBuilder
      */
