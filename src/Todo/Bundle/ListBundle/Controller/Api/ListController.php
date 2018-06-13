@@ -84,6 +84,7 @@ class ListController extends FOSRestController
         $form->handleRequest($request);
 
         if ($request->isMethod('POST') && $form->isValid()){
+            $list->setUser($this->getUser());
             $em->persist($list);
             $em->flush();
             return $list;

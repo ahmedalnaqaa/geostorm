@@ -5,6 +5,7 @@ namespace Todo\Bundle\UserBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Todo\Bundle\ListBundle\Entity\ListItem;
 
 /**
  * @ORM\Entity
@@ -30,9 +31,17 @@ class User extends BaseUser
     protected $groups;
 
     /**
-     * @ORM\OneToMany(targetEntity="ListItem", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Todo\Bundle\ListBundle\Entity\ListItem", mappedBy="user")
      */
     protected $lists;
+
+    /**
+     * @return ArrayCollection|ListItem[]
+     */
+    public function getLists()
+    {
+        return $this->lists;
+    }
 
     public function __construct()
     {

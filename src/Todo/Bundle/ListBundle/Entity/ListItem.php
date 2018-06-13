@@ -4,6 +4,7 @@ namespace Todo\Bundle\ListBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Todo\Bundle\UserBundle\Entity\User;
 
 /**
  * List
@@ -47,9 +48,26 @@ class ListItem
     private $items;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User",inversedBy="lists")
+     * @ORM\ManyToOne(targetEntity="Todo\Bundle\UserBundle\Entity\User",inversedBy="lists")
      */
     protected $user;
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set User
+     * @param User $user
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+    }
 
     /**
      * Get id.
@@ -123,6 +141,7 @@ class ListItem
     {
         return $this->created_at;
     }
+
 
     /**
      * @param mixed $created_at
