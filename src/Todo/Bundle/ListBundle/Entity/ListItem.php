@@ -11,7 +11,7 @@ use Todo\Bundle\UserBundle\Entity\User;
  *
  * @ORM\Table(name="lists")
  * @ORM\HasLifecycleCallbacks
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Todo\Bundle\ListBundle\Repository\ListRepository")
  */
 class ListItem
 {

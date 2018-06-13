@@ -8,9 +8,11 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Todo\Bundle\ListBundle\Entity\ListItem;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Todo\Bundle\ListBundle\Form\ListType;
+use Todo\Bundle\UserBundle\Entity\User;
 
 /**
  * @ORM\Entity
@@ -23,16 +25,21 @@ class ListController extends FOSRestController
      *
      * @ApiDoc(
      *  section="List",
-     *  description="Returns all Lists"
+     *  description="Returns User Lists"
      * )
      */
-    public function getListsAction()
+    public function getListsAction(User $user)
     {
+        if (!$this->getUser()) {
+            throw new AccessDeniedHttpException("Access Denied");
+        }
         $em = $this->getDoctrine()->getManager();
 
-        $lists = $em->getRepository('TodoBundleListBundle:ListItem')->findAll();
+        $lists = $em->getRepository('TodoBundleListBundle:ListItem')->getUserLists($user);
 
-        return new JsonResponse($lists, Response::HTTP_ACCEPTED);
+        return array(
+           'lists' => $lists
+        );
     }
 
     /**
@@ -50,6 +57,9 @@ class ListController extends FOSRestController
      */
     public function getListItems(ListItem $list)
     {
+       if (!$this->getUser() || $list->getUser() != $this->getUser()) {
+            throw new AccessDeniedHttpException("Access Denied");
+       }
        $items = $list->getItems();
 
        $data = $this->get('jms_serializer')->serialize($items,'json');
@@ -72,6 +82,9 @@ class ListController extends FOSRestController
      */
     public function createListAction(Request $request)
     {
+        if (!$this->getUser()) {
+            throw new AccessDeniedHttpException("Access Denied");
+        }
         $em = $this->getDoctrine()->getManager();
 
         $list = new ListItem();
@@ -109,6 +122,9 @@ class ListController extends FOSRestController
      */
     public function editListAction(Request $request,ListItem $list)
     {
+        if (!$this->getUser() || $this->getUser() != $list->getUser()) {
+            throw new AccessDeniedHttpException("Access Denied");
+        }
         $em = $this->getDoctrine()->getManager();
 
         if (!$list){
@@ -141,6 +157,9 @@ class ListController extends FOSRestController
      */
     public function deleteListAction(ListItem $list)
     {
+        if ($list->getUser() != $this->getUser()){
+            throw new AccessDeniedHttpException("Access Denied");
+        }
         $em = $this->getDoctrine()->getManager();
         if (!$list){
             return $this->createNotFoundException("List is not Found");
