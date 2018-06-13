@@ -1,9 +1,9 @@
 <?php
 
-namespace Todo\Bundle\ListBundle\Controller;
+namespace Todo\Bundle\ListBundle\Controller\Api;
 
+use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +11,7 @@ use Todo\Bundle\ListBundle\Entity\ListItem;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Todo\Bundle\ListBundle\Form\ListType;
 
-class ListController extends Controller
+class ListController extends FOSRestController
 {
     /**
      * @Rest\Get("/api/list")
@@ -67,15 +67,14 @@ class ListController extends Controller
      * Create List.
      *
      * @Rest\Post("/api/list/create")
-     * @Rest\QueryParam(name="title", description="List Title")
-     * @Rest\QueryParam(name="description", description="List Description")
-     * @Rest\QueryParam(name="created_at", description="List CreatedAt")
      * @Rest\View(serializerGroups={"Details", "Default"})
      * @ApiDoc(
      *     resource=true,
      *     section="List",
+     *     input="\Todo\Bundle\ListBundle\Form\ListType"
      * )
      * @param Request $request
+     * @return mixed
      */
     public function createListAction(Request $request)
     {
@@ -91,7 +90,6 @@ class ListController extends Controller
         $form->handleRequest($request);
 
         if ($request->isMethod('POST') && $form->isValid()){
-            $list = $form->getData();
             $em->persist($list);
             $em->flush();
             return $list;

@@ -11,9 +11,10 @@ class ListType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title',TextType::class)
-                ->add('description')
-                ->add('created_at');
+        $builder
+            ->add('title',TextType::class)
+            ->add('description')
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -25,6 +26,6 @@ class ListType extends AbstractType
 
     public function getName()
     {
-        return 'todo_bundle_list_bundle_list_type';
+        return 'list';
     }
 }

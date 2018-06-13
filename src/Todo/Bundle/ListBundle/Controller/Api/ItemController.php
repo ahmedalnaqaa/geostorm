@@ -1,6 +1,6 @@
 <?php
 
-namespace Todo\Bundle\ListBundle\Controller;
+namespace Todo\Bundle\ListBundle\Controller\Api;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Todo\Bundle\ListBundle\Entity\Item;
