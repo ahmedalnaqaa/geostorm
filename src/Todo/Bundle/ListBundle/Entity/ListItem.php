@@ -24,7 +24,6 @@ class ListItem
      */
     private $id;
 
-
     /**
      * @ORM\Column(type="string")
      */
@@ -141,7 +140,6 @@ class ListItem
     {
         return $this->created_at;
     }
-
 
     /**
      * @param mixed $created_at
