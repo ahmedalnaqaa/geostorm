@@ -22,11 +22,12 @@ class ListController extends FOSRestController
 {
     /**
      * @Rest\Get("/api/list")
-     *
+     * @Rest\View(serializerGroups = {"Default"})
      * @ApiDoc(
      *  section="List",
      *  description="Returns User Lists"
      * )
+     * @param User $user
      */
     public function getListsAction(User $user)
     {
@@ -37,9 +38,7 @@ class ListController extends FOSRestController
 
         $lists = $em->getRepository('TodoBundleListBundle:ListItem')->getUserLists($user);
 
-        return array(
-           'lists' => $lists
-        );
+       return new JsonResponse($lists, Response::HTTP_ACCEPTED);
     }
 
     /**
