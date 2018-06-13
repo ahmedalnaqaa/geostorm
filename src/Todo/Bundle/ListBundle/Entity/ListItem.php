@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * List
  *
  * @ORM\Table(name="lists")
- * @ORM\HasLifecycleCallbacks()
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Entity
  */
 class ListItem

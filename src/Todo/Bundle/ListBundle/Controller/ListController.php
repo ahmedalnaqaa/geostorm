@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Todo\Bundle\ListBundle\Entity\ListItem;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Todo\Bundle\ListBundle\Form\ListType;
 
 class ListController extends Controller
 {
@@ -69,6 +70,7 @@ class ListController extends Controller
      * @Rest\QueryParam(name="title", description="List Title")
      * @Rest\QueryParam(name="description", description="List Description")
      * @Rest\QueryParam(name="created_at", description="List CreatedAt")
+     * @Rest\View(serializerGroups={"Details", "Default"})
      * @ApiDoc(
      *     resource=true,
      *     section="List",
@@ -77,18 +79,24 @@ class ListController extends Controller
      */
     public function createListAction(Request $request)
     {
-//        $em = $this->getDoctrine()->getManager();
-//
-//        $list = new ListItem();
-//
-//        $em->persist($list);
-//        $em->flush();
-//
-//        return new JsonResponse('List is Created',Response::HTTP_OK);
+        $em = $this->getDoctrine()->getManager();
 
-        $body = $request->getContent();
+        $list = new ListItem();
 
-        return new Response($body);
+        $form = $this->createForm(ListType::class, $list, array(
+            'method' => 'POST',
+            'csrf_protection' => false,
+        ));
+
+        $form->handleRequest($request);
+
+        if ($request->isMethod('POST') && $form->isValid()){
+            $list = $form->getData();
+            $em->persist($list);
+            $em->flush();
+            return $list;
+        }
+        return $form;
     }
 
     /**
