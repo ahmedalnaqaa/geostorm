@@ -2,130 +2,108 @@
 
 namespace Todo\Bundle\ListBundle\Controller\Api;
 
+use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Todo\Bundle\ListBundle\Entity\Item;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Todo\Bundle\ListBundle\Entity\ListItem;
+use Todo\Bundle\ListBundle\Form\ItemType;
 
-class ItemController extends Controller
+class ItemController extends FOSRestController
 {
     /**
      * Create new Item in specific List
      *
      * @Rest\Post("/api/list/{id}/item")
-     * @Rest\QueryParam(name="content", description="Item Content")
-     * @Rest\QueryParam(name="order", description="Item order")
-     * @Rest\QueryParam(name="created_at", description="List CreatedAt")
-     *
+     * @Rest\View(serializerGroups={"Details", "Default"})
      * @ApiDoc(
-     *     section="Item"
+     *     section="Item",
+     *     input="Todo\Bundle\ListBundle\Form\ItemType"
      * )
      *
      * @param Request $request
-     * @param ListItem $listItem
+     * @param ListItem $list
+     * @return mixed
      */
-    public function addItemAction(Request $request,ListItem $listItem)
+    public function addItemAction(Request $request,ListItem $list)
     {
         $em = $this->getDoctrine()->getManager();
 
         if (!$list){
-            return new JsonResponse(['message' => 'List is not Found in the Database'], Response::HTTP_NOT_FOUND);
+            throw $this->createNotFoundException('List is not found');
         }
         $item = new Item();
 
-        $content = $request->get('content');
-        $order   = $request->get('order');
-        $created_at = $request->get('created_at');
+        $form = $this->createForm(ItemType::class, $item, array(
+            'method' => 'POST',
+            'csrf_protection' => false,
+        ));
 
-        $item->setContent($content);
-        $item->setOrder($order);
-        $item->setCreatedAt($created_at);
+        $form->handleRequest($request);
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($item);
-        $entityManager->flush();
-
-        return new JsonResponse("Item is Created", Response::HTTP_OK);
+        if ($request->isMethod('POST') && $form->isValid()){
+            $em->persist($item);
+            $em->flush();
+            return $item;
+        }
+        return $form;
     }
 
     /**
-     * Update Item
+     * Edit Item
      *
-     * @Rest\Post("/api/list/{list_id}/item/{id}/edit")
-     * @Rest\QueryParam(name="content", description="Item Content")
-     * @Rest\QueryParam(name="order", description="Item Order")
-     * @Rest\QueryParam(name="created_at", description="Item CreatedAt")
+     * @Rest\POST("/api/item/{id}/edit")
+     * @Rest\View(serializerGroups={"Details", "Default"})
      *
      * @ApiDoc(
      *     section="Item",
+     *     input="Todo\Bundle\ListBundle\Entity\Item"
      * )
      * @param Request $request
-     * @param $list_id
-     * @param $id
-     * @return JsonResponse
+     * @param Item $item
+     * @return mixed
      */
-    public function updateItemAction(Request $request, $list_id, Item $item)
+    public function editItemAction(Request $request,Item $item)
     {
         $em = $this->getDoctrine()->getManager();
-        $list = $em->getRepository('TodoBundleListBundle:ListItem')->find($list_id);
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $item = $entityManager->getRepository('TodoBundleListBundle:Item')->find($id);
+        $form = $this->createForm(ItemType::class, $item, array(
+            'method' => 'POST',
+            'csrf_protection' => false,
+        ));
 
-        if (!$list){
-            return new JsonResponse(['message' => 'List is not Found in the Database'], Response::HTTP_NOT_FOUND);
+        $form->handleRequest($request);
+
+        if ($form->isValid()){
+            $em->persist($item);
+            $em->flush();
+            return $item;
         }
-
-        $content = $request->get('content');
-        $order   = $request->get('order');
-        $created_at = $request->get('created_at');
-
-        $item->setContent($content);
-        $item->setOrder($order);
-        $item->setCreatedAt($created_at);
-
-        $entityManager->persist($item);
-        $entityManager->flush();
-
-        return new JsonResponse("Item is Updated Successfully",Response::HTTP_OK);
-
+        return $form;
     }
 
     /**
      * Delete Item
      *
-     * @Rest\Delete("/api/list/{list_id}/item/{id}/delete")
+     * @Rest\Delete("/api/item/{id}/delete")
      *
      * @ApiDoc(
      *     section="Item"
      * )
      */
-    public function deleteItemAction(ListItem $listItem,$id)
+    public function deleteItemAction(Item $item)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $list = $em->getRepository('TodoBundleListBundle:ListItem')->findBy(
-            array('listItem' => $listItem)
-        );
-
-        $entityManger = $this->getDoctrine()->getManager();
-
-        $item = $entityManger->getRepository('TodoBundleListBundle:Item')->find($id);
-
-        if (!$list){
-            return new JsonResponse("List is not Found",Response::HTTP_NOT_FOUND);
+        if (!$item){
+            throw $this->createNotFoundException('Item is not found');
         }
-        elseif (!$item){
-            return new JsonResponse("Item is not Found",Response::HTTP_NOT_FOUND);
-        }
-
         $em->remove($item);
         $em->flush();
 
-        return new JsonResponse("Item ID is Deleted",Response::HTTP_OK);
+        return new JsonResponse(null,Response::HTTP_NO_CONTENT);
     }
 }

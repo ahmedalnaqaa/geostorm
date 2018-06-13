@@ -39,6 +39,7 @@ class Item
 
     /**
      * @ORM\ManyToOne(targetEntity="ListItem", inversedBy="items")
+     * @ORM\JoinColumn(name="list_id", referencedColumnName="id")
      */
 
     private $list;
@@ -101,6 +102,11 @@ class Item
         $this->created_at = $created_at;
     }
 
-
-
+    /**
+     * @return mixed
+     */
+    public function getList()
+    {
+        return $this->list;
+    }
 }

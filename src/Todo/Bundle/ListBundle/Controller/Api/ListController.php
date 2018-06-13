@@ -95,7 +95,7 @@ class ListController extends FOSRestController
      * Edit List.
      *
      * @Rest\Post("/api/list/{id}/edit")
-     *
+     * @Rest\View(serializerGroups={"Details", "Default"})
      * @ApiDoc(
      *   resource=true,
      *   section="List",
