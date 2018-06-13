@@ -46,6 +46,10 @@ class ListItem
      */
     private $items;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="User",inversedBy="lists")
+     */
+    protected $user;
 
     /**
      * Get id.

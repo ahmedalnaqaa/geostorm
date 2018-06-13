@@ -42,7 +42,7 @@ class Item
      * @ORM\JoinColumn(name="list_id", referencedColumnName="id")
      */
 
-    private $list;
+    protected $list;
 
     /**
      * Get id.
