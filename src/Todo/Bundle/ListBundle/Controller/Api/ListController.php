@@ -22,7 +22,6 @@ class ListController extends FOSRestController
 {
     /**
      * @Rest\Get("/api/list")
-     * @Rest\View(serializerGroups = {"Default"})
      * @ApiDoc(
      *  section="List",
      *  description="Returns User Lists"
