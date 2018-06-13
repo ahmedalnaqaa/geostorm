@@ -11,7 +11,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Response;
 use JMS\DiExtraBundle\Annotation as DI;
 
-class LoginController extends TokenController
+class TokenDocController extends TokenController
 {
     protected $userManager;
 
@@ -35,7 +35,7 @@ class LoginController extends TokenController
      *   section="Oauth2",
      * )
      *
-     * @Rest\Post("api/v2/oauth/token")
+     * @Rest\Get("api/v2/oauth/token")
      * @Rest\QueryParam(name="access_token", description="Access Token")
      * @Rest\QueryParam(name="client_id", description="Client ID",)
      * @Rest\QueryParam(name="client_secret", description="Client Secret")

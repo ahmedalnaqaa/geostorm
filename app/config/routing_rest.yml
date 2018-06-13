@@ -1,7 +1,0 @@
-registration:
-    type: rest
-    resource: Todo\Bundle\UserBundle\Controller\Api\RegisterController
-
-login:
-    type: rest
-    resource: Todo\Bundle\UserBundle\Controller\Api\LoginController
