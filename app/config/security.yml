@@ -37,6 +37,22 @@ security:
             pattern:    ^/oauth/v2/auth
             anonymous:  true
 
+        api_login:
+            pattern:  ^/login
+            stateless: true
+            anonymous: true
+            form_login:
+                check_path:               /login
+                require_previous_session: false
+                username_parameter:       username
+                password_parameter:       password
+            logout: true
+
+        register:
+                pattern: ^/register
+                anonymous: true
+                stateless: true
+
         api:
             pattern:    ^/api
             fos_oauth:  true
@@ -49,3 +65,4 @@ security:
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN] }
         - { path: ^/api, roles: [ IS_AUTHENTICATED_FULLY ] }
+
