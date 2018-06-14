@@ -52,6 +52,35 @@ class TokenDocController extends TokenController
      *
      * @return Response
      */
+    public function tokenAction(Request $request)
+    {
+        return parent::tokenAction($request);
+    }
+
+    /**
+     * Oauth2 Login
+     * @ApiDoc(
+     *   resource = true,
+     *   section="Oauth2"
+     * )
+     *
+     * @Rest\Post("/api/v2/oauth/token/login")
+     * @Rest\QueryParam(name="access_token", description="Access Token")
+     * @Rest\QueryParam(name="client_id", description="Client ID",)
+     * @Rest\QueryParam(name="client_secret", description="Client Secret")
+     * @Rest\QueryParam(
+     *     name="grant_type",
+     *     description="{ password, client_credentials, refresh_token }"
+     * )
+     * @Rest\QueryParam(name="username", description="Username")
+     * @Rest\QueryParam(name="password", description="Password")
+     * @Rest\QueryParam(name="refresh_token", description="Refresh Token")
+     * @Rest\View()
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
     public function loginAction(Request $request)
     {
         $username = $request->get('username');
