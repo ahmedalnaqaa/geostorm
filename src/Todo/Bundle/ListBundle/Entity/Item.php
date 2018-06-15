@@ -103,10 +103,19 @@ class Item
     }
 
     /**
+     * @param mixed $list
+     */
+    public function setList(ListItem $list)
+    {
+        $this->list = $list;
+    }
+
+    /**
      * @return mixed
      */
     public function getList()
     {
         return $this->list;
     }
+
 }

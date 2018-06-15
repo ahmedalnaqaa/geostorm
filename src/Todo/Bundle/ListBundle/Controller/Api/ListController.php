@@ -33,10 +33,7 @@ class ListController extends FOSRestController
         if (!$this->getUser()) {
             throw new AccessDeniedHttpException("Access Denied");
         }
-        $em = $this->getDoctrine()->getManager();
-
-        $lists = $em->getRepository('TodoBundleListBundle:ListItem')->getUserLists($user);
-
+       $lists = $user->getLists();
        return new JsonResponse($lists, Response::HTTP_ACCEPTED);
     }
 
@@ -46,7 +43,7 @@ class ListController extends FOSRestController
      * @param ListItem $listItem
      * @return JsonResponse
      *
-     * @Rest\Get("/api/list/{id}")
+     * @Rest\Get("/api/list/{id}/items")
      *
      * @ApiDoc(
      *   resource=true,
@@ -60,9 +57,7 @@ class ListController extends FOSRestController
        }
        $items = $list->getItems();
 
-       $data = $this->get('jms_serializer')->serialize($items,'json');
-
-       return new JsonResponse($data, Response::HTTP_ACCEPTED);
+       return new JsonResponse($items, Response::HTTP_ACCEPTED);
     }
 
     /**

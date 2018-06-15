@@ -18,7 +18,7 @@ class ItemController extends FOSRestController
     /**
      * Create new Item in specific List
      *
-     * @Rest\Post("/api/list/{id}/item")
+     * @Rest\Post("/api/list/{id}/add-item")
      * @Rest\View(serializerGroups={"Details", "Default"})
      * @ApiDoc(
      *     section="Item",
@@ -40,15 +40,13 @@ class ItemController extends FOSRestController
             throw $this->createNotFoundException('List is not found');
         }
         $item = new Item();
-
         $form = $this->createForm(ItemType::class, $item, array(
             'method' => 'POST',
             'csrf_protection' => false,
         ));
-
         $form->handleRequest($request);
-
         if ($request->isMethod('POST') && $form->isValid()){
+            $item = $form->getData();
             $em->persist($item);
             $em->flush();
             return $item;
